@@ -28,7 +28,7 @@ namespace main
 						equal = false;
 					}
 				}
-			// Vertauschen, wenn 0
+			// Wenn 0, vertausche, sonst, invertiere
 			if (bla != 1) {
 				tmp = genome[z1-1];
 				genome[z1-1] = genome[z2-1];
