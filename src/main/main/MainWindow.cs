@@ -23,5 +23,6 @@ public partial class MainWindow: Gtk.Window
 		
 		a = Evolution.Mutate(a);
 		List<int> c = Evolution.Recombine(a,b);
+		List<int> d = Genome.GetNewGenome(5);
 	}
 }

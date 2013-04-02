@@ -205,6 +205,58 @@ namespace main
 			tmp = string.Format("{0} }}", tmp);
 			return tmp;
 		}
+		
+		/// <summary>
+		/// The actual evolutionary algorithm - corresponds to doc/EvoAlgTSP.pdf.
+		/// </summary>
+		public static void Compute()
+		{
+			// The number of genes.
+			int countGene;
+			// Maximum number of created generations.
+			int maxGenerations = 100;
+			// Holds the number of created generations.
+			int countGeneration;
+			// The number of individuals in the population
+			int countIndividuals;
+			// The number of children.
+			int countChilds;
+			// A value between 0 and 1. Used to create child individuals.
+			double limit = 0.5;
+			
+			Console.WriteLine("Compute:");
+			
+			for (countGeneration = 0; countGeneration < maxGenerations; countGeneration++)
+			{
+				// 2. Initialize population P(0) with random genomes
+				
+				// 3. Compute fitness value of P(0)
+				
+				// 4. Create childs and add them to a population P'
+				
+				int iMax = 100;
+				double rndDouble;
+				
+				for (int i = 0; i < iMax; i++)
+				{
+					// Return a random number between 0 and 1
+					Random rnd =  new Random();
+					rndDouble = rnd.NextDouble();
+					
+					if (rndDouble <= limit)
+					{
+						// I.	Recombine two individuals A and B of population P(0)
+						// II.	Mutate the child C
+						// III.	Add child C to P'
+						
+					}
+				}
+				
+				// 5. Compute fitness value of P'
+				
+				// 6. Create child population -> best individuals of P(0) + P'
+			}
+		}
 	}
 }
 
