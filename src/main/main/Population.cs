@@ -13,13 +13,15 @@ namespace main
 		List<List<int>> generation2;
 		int countGenes;
 		
-		public Population (uint size, int genes)
+		public Population (int size, int genes)
 		{
 			countGenes = genes;
+			generation1 = new List<List<int>>();
+			List<int> genome;
+			
 			for(int i = 0; i < size; i++)
 			{
-				List<int> genome = Genome.GetNewGenome(countGenes);
-				generation1 = new List<List<int>>();
+				genome = Genome.GetNewGenome(countGenes);
 				generation1.Add(genome);
 			}
 		}

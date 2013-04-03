@@ -23,6 +23,15 @@ public partial class MainWindow: Gtk.Window
 		
 		a = Evolution.Mutate(a);
 		List<int> c = Evolution.Recombine(a,b);
-		List<int> d = Genome.GetNewGenome(5);
+		
+		// für Fehlersuche: x sollte { 1, 3, 8, 4, 4, 2, 6, 7 } sein
+		List<int> z = new List<int>() {1,5,8,4,3,2,6,7};
+		List<int> y = new List<int>() {1,4,8,6,5,7,2,3};
+		List<int> x = Evolution.Recombine(z,y);
+		
+		//List<int> d = Genome.GetNewGenome(8);
+		
+		Console.WriteLine("Create new Population:");
+		Population p0 = new Population(100, 8);
 	}
 }
