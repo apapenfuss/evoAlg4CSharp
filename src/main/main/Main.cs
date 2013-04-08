@@ -10,7 +10,7 @@ namespace main
 		{
 			Application.Init ();
 			MainWindow win = new MainWindow ();
-			win.Title = "Evolutionary Algorithms";
+			win.Title = "Evolutionary Algorithms for C#";
 			win.Show ();
 			Application.Run ();
 		}

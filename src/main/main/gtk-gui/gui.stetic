@@ -25,10 +25,25 @@
             <property name="Label" translatable="yes">Los!</property>
             <property name="UseUnderline">True</property>
             <signal name="Clicked" handler="OnBtnStartClicked" />
+            <signal name="Activated" handler="OnBtnStartActivated" />
           </widget>
           <packing>
             <property name="X">152</property>
             <property name="Y">103</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.CheckButton" id="checkbutton1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Label" translatable="yes">checkbutton1</property>
+            <property name="DrawIndicator">True</property>
+            <property name="HasLabel">True</property>
+            <property name="UseUnderline">True</property>
+          </widget>
+          <packing>
+            <property name="X">138</property>
+            <property name="Y">165</property>
           </packing>
         </child>
       </widget>

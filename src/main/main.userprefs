@@ -1,12 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="main/Genome.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="main/Evolution.cs">
     <Files>
-      <File FileName="main/Main.cs" Line="1" Column="1" />
-      <File FileName="main/Evolution.cs" Line="103" Column="1" />
-      <File FileName="main/MainWindow.cs" Line="32" Column="1" />
-      <File FileName="main/Population.cs" Line="19" Column="40" />
-      <File FileName="main/Genome.cs" Line="18" Column="30" />
+      <File FileName="main/Main.cs" Line="13" Column="40" />
+      <File FileName="main/Evolution.cs" Line="283" Column="59" />
+      <File FileName="main/MainWindow.cs" Line="1" Column="1" />
+      <File FileName="main/Population.cs" Line="53" Column="3" />
+      <File FileName="main/Genome.cs" Line="13" Column="55" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -14,9 +14,12 @@
           <Node name="main" expanded="True">
             <Node name="References" expanded="True" />
             <Node name="UserInterface" expanded="True" />
-            <Node name="Genome.cs" selected="True" />
+            <Node name="Evolution.cs" selected="True" />
           </Node>
         </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State>
@@ -29,7 +32,6 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/norman/main/main/Evolution.cs" line="17" />
-      <Breakpoint file="/home/norman/mono/evoAlg4CSharp/src/main/main/MainWindow.cs" line="32" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

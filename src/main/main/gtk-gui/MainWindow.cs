@@ -5,6 +5,7 @@ public partial class MainWindow
 {
 	private global::Gtk.Fixed fixed1;
 	private global::Gtk.Button btn_Start;
+	private global::Gtk.CheckButton checkbutton1;
 	
 	protected virtual void Build ()
 	{
@@ -27,6 +28,17 @@ public partial class MainWindow
 		global::Gtk.Fixed.FixedChild w1 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.btn_Start]));
 		w1.X = 152;
 		w1.Y = 103;
+		// Container child fixed1.Gtk.Fixed+FixedChild
+		this.checkbutton1 = new global::Gtk.CheckButton ();
+		this.checkbutton1.CanFocus = true;
+		this.checkbutton1.Name = "checkbutton1";
+		this.checkbutton1.Label = global::Mono.Unix.Catalog.GetString ("checkbutton1");
+		this.checkbutton1.DrawIndicator = true;
+		this.checkbutton1.UseUnderline = true;
+		this.fixed1.Add (this.checkbutton1);
+		global::Gtk.Fixed.FixedChild w2 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.checkbutton1]));
+		w2.X = 138;
+		w2.Y = 165;
 		this.Add (this.fixed1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -36,5 +48,6 @@ public partial class MainWindow
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.btn_Start.Clicked += new global::System.EventHandler (this.OnBtnStartClicked);
+		this.btn_Start.Activated += new global::System.EventHandler (this.OnBtnStartActivated);
 	}
 }

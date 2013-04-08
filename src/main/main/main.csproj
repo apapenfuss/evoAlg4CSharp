@@ -73,6 +73,7 @@
     <Compile Include="Evolution.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="Genome.cs" />
+    <Compile Include="FitnessFunctions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

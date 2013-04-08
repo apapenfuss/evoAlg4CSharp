@@ -18,6 +18,7 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnBtnStartClicked (object sender, EventArgs e)
 	{
+		/*
 		List<int> a = new List<int>() {1,2,3,4,8,5,6,7};
 		List<int> b = new List<int>() {1,4,8,6,5,7,2,3};
 		
@@ -33,5 +34,12 @@ public partial class MainWindow: Gtk.Window
 		
 		Console.WriteLine("Create new Population:");
 		Population p0 = new Population(100, 8);
+		*/
+		Evolution.Compute();
+	}
+
+	protected void OnBtnStartActivated (object sender, System.EventArgs e)
+	{
+		throw new System.NotImplementedException ();
 	}
 }
