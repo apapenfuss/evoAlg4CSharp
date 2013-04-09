@@ -15,7 +15,7 @@ namespace main
 		public static void Mutate (Genome genome, bool? invert ) 
 		{
 			
-			Console.WriteLine("Mutate:");
+//			Console.WriteLine("Mutate:");
 			/*
 			Console.WriteLine(string.Format("\tGenom: {0}", ListToString(genome)));
 			Console.WriteLine();
@@ -74,14 +74,13 @@ namespace main
 				throw new ArgumentNullException();
 			}
 			//Fehler, wenn Längen der Genome unterschiedlich
-			//todo: eventuell doch möglich?
 			if (genomeA.Count != genomeB.Count) {
 				throw new ArgumentException("Cant recombine genomes with a different count of values.");
 			}
 			/*
 			Console.WriteLine(string.Format("Recombine:"));
-			Console.WriteLine(string.Format("\tGenomeA: {0}", ListToString(genomeA)));
-			Console.WriteLine(string.Format("\tGenomeB: {0}", ListToString(genomeB)));
+			Console.WriteLine(string.Format("\tGenomeA: {0}", genomeA.AsString()));
+			Console.WriteLine(string.Format("\tGenomeB: {0}", genomeB.AsString()));
 			Console.WriteLine();
 			*/
 			//Kinder-List mit Startallel initialisieren
@@ -97,13 +96,13 @@ namespace main
 			foreach (int gene in genomeA)
 			{
 				neighbours.Add(gene, GetNeighboursOfValue(gene, genomeA,genomeB));
-				//Console.WriteLine(string.Format("\t\tAllel: {0}, Nachbarn: {1}", k, ListToString(neighbours[k])));
+//				Console.WriteLine(string.Format("\t\tAllel: {0}, Nachbarn: {1}", gene, Helper.ListToString(neighbours[gene])));
 			}
 			//Console.WriteLine();
 			
 			//Kind ermitteln
-			Console.WriteLine(string.Format("\tErmittle Kind-Genom..."));
-			Console.WriteLine();
+//			Console.WriteLine(string.Format("\tErmittle Kind-Genom..."));
+//			Console.WriteLine();
 			int tempAllel = 0;
 			//Alle Allele durchgehen
 			foreach (int gene in genomeA)
@@ -113,10 +112,10 @@ namespace main
 					break;
 				
 				int minLength = int.MaxValue;
-				//Console.WriteLine(string.Format("\t\tErmittle eine der kleinsten Nachbarmengen für Allel: {0}", gene));
+//				Console.WriteLine(string.Format("\t\tErmittle eine der kleinsten Nachbarmengen für Allel: {0}", gene));
 				foreach (int i in neighbours[gene])
 				{
-					Genome subNeighbours = (Genome)neighbours[i].ToList();
+					Genome subNeighbours = neighbours[i].Copy();
 					subNeighbours.RemoveAll(s => childs.Contains(s));
 					//Immer wenn eine kürzere Nachbarmenge gefunden wurde -> das zugehörige Allel merken, insofern noch nicht im Kind vorhanden
 					//todo: Hier evtl Fehler, Ergebniss Allele doppelt
@@ -126,14 +125,14 @@ namespace main
 						minLength = subNeighbours.Count;
 					}
 				}
-				//Console.WriteLine(string.Format("\t\tErgebnis: {0}", tempAllel));
+//				Console.WriteLine(string.Format("\t\tErgebnis: {0}", tempAllel));
 				//Ermitteltes Allel zum Kind hinzufügen
 				childs.Add(tempAllel);
 			}
-			/*
-			Console.WriteLine();
-			Console.WriteLine(string.Format("Kindgenom: {0}", ListToString(childs)));
-			*/
+
+//			Console.WriteLine();
+//			Console.WriteLine(string.Format("Kindgenom: {0}", childs.AsString()));
+
 			return childs;
 		}
 		
@@ -158,14 +157,14 @@ namespace main
 			b.Add(genomeB[0]);
 
 			//Nachbarn
-			List<int> neighbours = new List<int>();
+			Genome neighbours = new Genome();
 			neighbours.Add(a[genomeA.IndexOf(value)]);
 			neighbours.Add(a[genomeA.IndexOf(value)+2]);
 			neighbours.Add(b[genomeB.IndexOf(value)]);
 			neighbours.Add(b[genomeB.IndexOf(value)+2]);
 
 			//Doppelte Einträge entfernen und ab damit
-			return (Genome)neighbours.Distinct().ToList();
+			return new Genome(neighbours.Distinct().ToArray());
 		}
 		
 //		/// <summary>
@@ -184,67 +183,6 @@ namespace main
 //			tmp = string.Format("{0} }}", tmp);
 //			return tmp;
 //		}
-		
-		/// <summary>
-		/// Berechnet die Fitness des übergebenen Genoms
-		/// </summary>
-		/// <returns>Fitnesswert</returns>
-		/// <param name='genome'>Genom</param>
-		private static double ComputeFitness (Genome genome)
-		{
-			double fitness = 0.00;
-			
-			//List<int> a = genome.ToList();
-			//a.Insert(0, genome[genome.Count-1]);
-			//a.Add(genome[0]);
-			for (int h = 0; h < genome.Count()-1; h++)
-			{
-				int i = genome[h];
-				int j = genome[h+1];
-					if (i==1 && j==2 || i==2 && j==1 || i==4 && j==6 || i==6 && j==4)
-					{
-						fitness += 5;
-					} 
-					if (i==1 && j==3 || i==3 && j==1 || i==3 && j==6 || i==6 && j==3)
-					{
-						fitness += 8;
-					}
-					if (i==1 && j==4 || i==4 && j==1 || i==5 && j==6 || i==6 && j==5)
-					{
-						fitness += 11;
-					}
-					if (i==1 && j==5 || i==5 && j==1 || i==2 && j==4 || i==4 && j==2)
-					{
-						fitness += 4;
-					}
-					if (i==1 && j==6 || i==6 && j==1)
-					{
-						fitness += 7;
-					}
-					if (i==2 && j==3 || i==3 && j==2)
-					{
-						fitness += 10;
-					}
-					if (i==2 && j==5 || i==5 && j==2)
-					{
-						fitness += 9;
-					}
-					if (i==2 && j==6 || i==6 && j==2)
-					{
-						fitness += 12;
-					}
-					if (i==3 && j==4 || i==4 && j==3 || i==5 && j==4 || i==4 && j==5)
-					{
-						fitness += 6;
-					}
-					if (i==3 && j==5 || i==5 && j==3)
-					{
-						fitness += 17;
-					}
-			}
-			
-			return fitness;
-		}
 		
 		/// <summary>
 		/// Der eigentliche evolutionäre Algorithmus - entspricht doc/EvoAlgTSP.pdf.
@@ -271,34 +209,26 @@ namespace main
 			
 			for (countGeneration = 0; countGeneration < maxGenerations; countGeneration++)
 			{	
-			// 2. Berechne die Finesswerte von P(0)
-				Genome bestGenome = p.GetBestGenome();
+				// 2. Berechne die Fitnesswerte von P(0)
+				foreach (Genome genome in p.curGeneration) {
+					FitnessFunctions.CalcTspFitness(genome);
+				}
 
-//				for(int i = 0; i < countIndividuals; i++)
-//				{
-//					//curFit = ComputeFitness(p.GetGenomeAt(i));
-//					if (i==0)
-//					{
-//						bestFit = curFit;
-//						bestGenome = p.GetGenomeAt(i);
-//					}
-//					Console.WriteLine(string.Format("\tAktuelle Fitness {0}", curFit));
-//					sumFit += curFit;
-//					if(curFit < bestFit)
-//					{
-//						bestFit = curFit;
-//						bestGenome = p.GetGenomeAt(i);
-//					}
-//					
-//				}
+				Console.WriteLine(string.Format("Durchlauf: {0}", countGeneration + 1));
+				Console.WriteLine(string.Format("\tAktuelle Population (Count: {1}): \r\n{0}", p.CurrentGenerationAsString(), p.curGeneration.Count));
+
+				Genome bestGenome = p.GetBestGenome();
 				
 				Console.WriteLine(string.Format("\tBeste Fitness {0}", bestGenome.Fitness));
-				Console.WriteLine(string.Format("\tBestes Genom {0}", bestGenome));
+				Console.WriteLine(string.Format("\tBestes Genom {0}", bestGenome.AsString()));
 				
 				// Berechne Durchschnittsfitnesswert der aktuellen Generation
 				//averageFitness = sumFit / countIndividuals; // p.Size();
 				Console.WriteLine(string.Format("\tDurchschnittliche Fitness {0}", p.GetAverageFitness()));
 			
+				//alte Generation merken
+				p.Swap();
+
 				// 3. Erzeuge Kinder und füge sie P' hinzu
 				
 				Random rnd =  new Random(Guid.NewGuid().GetHashCode());
@@ -314,28 +244,33 @@ namespace main
 					if (rndDouble <= recombinationProbability)
 					{
 						// I.	Rekombination zweier Individuen A und B aus Population P(0)
-						rndIndexA = rnd.Next(0, p.curGeneration.Count + 1);
-						rndIndexB = rnd.Next(0, p.curGeneration.Count + 1);
-						Console.WriteLine(string.Format("rndIndexA: {0}\nrndIndexB: {1}", rndIndexA, rndIndexB));
+						rndIndexA = rnd.Next(0, p.curGeneration.Count);
+						rndIndexB = rnd.Next(0, p.curGeneration.Count);
+//						Console.WriteLine(string.Format("rndIndexA: {0}\nrndIndexB: {1}", rndIndexA, rndIndexB));
 						
-						Genome child = Evolution.Recombine(p.curGeneration[rndIndexA], p.curGeneration[rndIndexB]);
+						Genome child = Recombine(p.curGeneration[rndIndexA], p.curGeneration[rndIndexB]);
+
+						// II.	Mutiere Kind c
+						Mutate(child, null);
 						
-						// II.	Mutiere Kind C
-						Evolution.Mutate(child, null);
-						
-						// III.	Füge Kind C zu P' hinzu
+						// III.	Füge Kinder C zu P' hinzu
 						p.curGeneration.Add(child);
+
+//						Console.WriteLine(string.Format("\tKind: {0}", child.AsString()));
+
 						c++;
 					}
-					
 				}
 				
-			// 4. Berechne die Fitness von P'
-
+				// 4. Berechne die Fitness von P'
+				foreach (Genome genome in p.curGeneration) {
+					FitnessFunctions.CalcTspFitness(genome);
+				}
 				
 				
 			// 5. Erzeuge Kind-Population -> die besten Individuen aus P' + P(0)
 				//p.NewGeneration();
+				Selection.Tsp.TopOfNewGenAndOldGen(p, 10);
 			}
 		}
 	}

@@ -7,7 +7,8 @@ namespace main
 	{
 		public static void CalcTspFitness(Genome genome)
 		{
-			Genome tempGenome = (Genome)genome.ToList();
+			genome.Fitness = 0;
+			Genome tempGenome = genome.Copy();
 			tempGenome.Add(1);
 			
 			int[,] matrix = new int[,]
@@ -21,9 +22,8 @@ namespace main
 							 };
 			
 			foreach (int gene in genome) {
-				genome.Fitness += matrix[gene - 1,tempGenome[tempGenome.IndexOf(gene)+1]];
+				genome.Fitness += matrix[gene - 1,tempGenome[tempGenome.IndexOf(gene)+1]-1];
 			}
-			
 		}
 	}
 }

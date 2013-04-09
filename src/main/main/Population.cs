@@ -10,7 +10,7 @@ namespace main
 	public class Population
 	{				
 		public List<Genome> curGeneration;
-		public List<Genome> newGeneration;
+		public List<Genome> oldGeneration;
 		
 		/// <summary>
 		/// Konstruktor
@@ -19,6 +19,9 @@ namespace main
 		/// <param name='genomeSize'>Größe des einzelnen Genomes</param>
 		public Population (int size, int genomeSize)
 		{
+			curGeneration = new List<Genome>();
+			oldGeneration = new List<Genome>();
+
 			for(int i = 0; i < size; i++)
 			{
 				curGeneration.Add(new Genome(genomeSize));
@@ -30,19 +33,24 @@ namespace main
 		/// </summary>
 		public void Swap ()
 		{
-			curGeneration = newGeneration;
+			oldGeneration.Clear();
+			foreach (Genome genome in curGeneration) {
+				oldGeneration.Add(genome.Copy());
+			}
 		}
 		
 		public Genome GetBestGenome()
 		{
 			Genome bestGenome = new Genome();
+			bestGenome.Fitness = double.MaxValue;
+
 			foreach (Genome genome in curGeneration)
 			{
-				if (genome.Fitness > bestGenome.Fitness) {
+				if (genome.Fitness < bestGenome.Fitness) {
 					bestGenome = genome;
 				}
 			}
-			return bestGenome;
+			return bestGenome.Copy();
 		}
 		
 		public double GetTotalFitness()
@@ -58,6 +66,16 @@ namespace main
 		public double GetAverageFitness()
 		{
 			return GetTotalFitness() / curGeneration.Count;
+		}
+
+		public string CurrentGenerationAsString()
+		{
+			string tmp = string.Empty;
+			foreach (Genome genome in curGeneration) 
+			{
+				tmp += genome.AsString() + "\r\n";
+			}
+			return tmp;
 		}
 	}
 }	

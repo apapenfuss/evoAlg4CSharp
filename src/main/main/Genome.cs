@@ -15,12 +15,18 @@ namespace main
 			}
 			set { _Fitness = value; }
 		}		
-		
-		public Genome () 
+
+		public Genome()
 		{
-			
+
 		}
-		
+
+		public Genome (int[] arr)
+		{
+			this.Clear();
+			this.AddRange(arr);
+		}
+
 		public Genome(int size) 
 		{
 			//List<int> genome = new List<int>() {1};
@@ -41,46 +47,16 @@ namespace main
 			}
 			
 			//Console.WriteLine("Create new Genome:");
-			Console.WriteLine(string.Format("\tGenom: {0}", this.AsString()));
-			FitnessFunctions.CalcTspFitness(this);
+//			Console.WriteLine(string.Format("\tGenom: {0}", this.AsString()));
 			//return genome;
 		}
-		
-		/// <summary>
-		/// Generiert ein zufälliges Genom
-		/// </summary>
-		/// <returns>Genom</returns>
-		/// <param name='countGenes'>Anzahl der Gene</param>
-//		public static List<int> GetNewGenome(int countGenes)
-//		{	
-//			List<int> genome = new List<int>() {1};
-//			
-//			Random rnd = new Random(Guid.NewGuid().GetHashCode());
-//			
-//			int rndInt;
-//			
-//			for(int i = 0; i < countGenes-1; i++)
-//			{
-//				rndInt=rnd.Next(1, countGenes+1);
-//				while (genome.Contains(rndInt))
-//				{
-//					rndInt=rnd.Next(1,countGenes+1);
-//				}
-//				genome.Add(rndInt);
-//			}
-//			
-//			//Console.WriteLine("Create new Genome:");
-//			Console.WriteLine(string.Format("\tGenom: {0}", ListToString(genome)));
-//			
-//			return genome;
-//		}
-		
+				
 		/// <summary>
 		/// Convertiert den Inhalt einer Liste in einen String.
 		/// </summary>
 		/// <returns>Inhalt als String</returns>
 		/// <param name="list">Zu konvertierende Liste</param>
-		private string AsString()
+		public string AsString()
 		{
 			string tmp = "{";
 			string sep = string.Empty;
@@ -88,8 +64,15 @@ namespace main
 				tmp = string.Format("{0}{1} {2}", tmp, sep, i);
 				sep = ",";
 			}
-			tmp = string.Format("{0} }}", tmp);
+			tmp = string.Format("{0} }} Fitness: {1}", tmp, _Fitness);
 			return tmp;
+		}
+
+		public Genome Copy()
+		{
+			Genome result = new Genome (this.ToArray());
+			result.Fitness = this.Fitness;
+			return result;
 		}
 	}
 }
