@@ -16,7 +16,7 @@ namespace main
 				//list.Sort((a,b) => a.date.CompareTo(b.date));
 				newGen.Sort((a,b) => a.Fitness.CompareTo(b.Fitness));
 
-				newGen.RemoveRange(TopCount - 1, newGen.Count - TopCount);
+				newGen.RemoveRange(TopCount, newGen.Count() - TopCount);
 
 //				string tmp = string.Empty;
 //				foreach (Genome genome in newGen) 

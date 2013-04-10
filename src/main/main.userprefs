@@ -1,14 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="main\Evolution.cs">
     <Files>
       <File FileName="main\MainWindow.cs" Line="1" Column="1" />
-      <File FileName="main\Evolution.cs" Line="262" Column="7" />
-      <File FileName="c:\Users\Undisputed\Documents\GitHub\evoAlg4CSharp\src\main\main\Population.cs" Line="51" Column="6" />
+      <File FileName="main\Evolution.cs" Line="281" Column="31" />
+      <File FileName="c:\Users\Undisputed\Documents\GitHub\evoAlg4CSharp\src\main\main\Population.cs" Line="54" Column="4" />
       <File FileName="main\Genome.cs" Line="65" Column="15" />
-      <File FileName="c:\Users\Undisputed\Documents\GitHub\evoAlg4CSharp\src\main\main\FitnessFunctions.cs" Line="25" Column="29" />
-      <File FileName="main\Helper.cs" Line="8" Column="40" />
-      <File FileName="main\Selection.cs" Line="30" Column="48" />
+      <File FileName="c:\Users\Undisputed\Documents\GitHub\evoAlg4CSharp\src\main\main\FitnessFunctions.cs" Line="1" Column="1" />
+      <File FileName="main\Helper.cs" Line="1" Column="1" />
+      <File FileName="main\Selection.cs" Line="27" Column="5" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -26,7 +26,7 @@
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State>
           <Value>gene - 1</Value>
-          <Value>tempGenome.IndexOf(gene)+1</Value>
+          <Value>childs.Count()</Value>
           <Value>tempGenome[tempGenome.IndexOf(gene)+1]]</Value>
           <Value>matrix[gene - 1,tempGenome[tempGenome.IndexOf(gene)+1]]</Value>
         </State>

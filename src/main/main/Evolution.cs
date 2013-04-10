@@ -77,21 +77,21 @@ namespace main
 			if (genomeA.Count != genomeB.Count) {
 				throw new ArgumentException("Cant recombine genomes with a different count of values.");
 			}
-			/*
-			Console.WriteLine(string.Format("Recombine:"));
-			Console.WriteLine(string.Format("\tGenomeA: {0}", genomeA.AsString()));
-			Console.WriteLine(string.Format("\tGenomeB: {0}", genomeB.AsString()));
-			Console.WriteLine();
-			*/
+
+//			Console.WriteLine(string.Format("Recombine:"));
+//			Console.WriteLine(string.Format("\tGenomeA: {0}", genomeA.AsString()));
+//			Console.WriteLine(string.Format("\tGenomeB: {0}", genomeB.AsString()));
+//			Console.WriteLine();
+
 			//Kinder-List mit Startallel initialisieren
 			Genome childs = new Genome();
 			childs.Add(genomeA[0]);
 			
 			//Nachbarn für alle Allele ermitteln
-			/*
-			Console.WriteLine(string.Format("\tErmittle alle Nachbarn..."));
-			Console.WriteLine();
-			*/
+
+//			Console.WriteLine(string.Format("\tErmittle alle Nachbarn..."));
+//			Console.WriteLine();
+
 			Dictionary<int, Genome> neighbours = new Dictionary<int, Genome>();
 			foreach (int gene in genomeA)
 			{
@@ -105,29 +105,33 @@ namespace main
 //			Console.WriteLine();
 			int tempAllel = 0;
 			//Alle Allele durchgehen
-			foreach (int gene in genomeA)
+			int j = 0;
+			int g = 1;
+			while (j < genomeA.Count() - 1)
 			{
 				//Falls letztes Allel -> nicht behandeln da Endpunkt
-				if (genomeA.IndexOf(gene) == genomeA.Count -1)
-					break;
+//				if (genomeA.IndexOf(g) == genomeA.Count -1)
+//					break;
 				
 				int minLength = int.MaxValue;
-//				Console.WriteLine(string.Format("\t\tErmittle eine der kleinsten Nachbarmengen für Allel: {0}", gene));
-				foreach (int i in neighbours[gene])
+//				Console.WriteLine(string.Format("\t\tErmittle eine der kleinsten Nachbarmengen für Allel: {0}", g));
+				foreach (int i in neighbours[g])
 				{
 					Genome subNeighbours = neighbours[i].Copy();
 					subNeighbours.RemoveAll(s => childs.Contains(s));
 					//Immer wenn eine kürzere Nachbarmenge gefunden wurde -> das zugehörige Allel merken, insofern noch nicht im Kind vorhanden
 					//todo: Hier evtl Fehler, Ergebniss Allele doppelt
-					if (subNeighbours.Count < minLength && !childs.Contains(i)) {
+					if (subNeighbours.Count() < minLength && !childs.Contains(i)) {
 						tempAllel = i;
 						//Neue kürzeste Länge merken die es zu unterbieten gilt
-						minLength = subNeighbours.Count;
+						minLength = subNeighbours.Count();
 					}
 				}
 //				Console.WriteLine(string.Format("\t\tErgebnis: {0}", tempAllel));
 				//Ermitteltes Allel zum Kind hinzufügen
 				childs.Add(tempAllel);
+				g = tempAllel;
+				j++;
 			}
 
 //			Console.WriteLine();
@@ -271,6 +275,13 @@ namespace main
 			// 5. Erzeuge Kind-Population -> die besten Individuen aus P' + P(0)
 				//p.NewGeneration();
 				Selection.Tsp.TopOfNewGenAndOldGen(p, 10);
+			}
+
+			//Ausgabe der besten Genome
+			//todo: Distinct funzt nich
+			List<Genome> bestGenomes = p.curGeneration.Distinct().ToList();
+			foreach (Genome genome in bestGenomes) {
+				Console.WriteLine(genome.AsString());
 			}
 		}
 	}
