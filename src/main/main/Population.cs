@@ -73,7 +73,7 @@ namespace main
 			string tmp = string.Empty;
 			foreach (Genome genome in curGeneration) 
 			{
-				tmp += genome.AsString() + "\r\n";
+				tmp += "\t" + genome.AsString() + "\r\n";
 			}
 			return tmp;
 		}

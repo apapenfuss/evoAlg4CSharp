@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Gtk;
 
 namespace main
 {
@@ -20,7 +21,7 @@ namespace main
 			Console.WriteLine(string.Format("\tGenom: {0}", ListToString(genome)));
 			Console.WriteLine();
 			 */
-			Random rnd = new Random();
+			Random rnd = new Random(Guid.NewGuid().GetHashCode());
 			if (!invert.HasValue)
 				invert = Convert.ToBoolean(rnd.Next(2));
 			
@@ -41,17 +42,17 @@ namespace main
 			}
 			//Console.WriteLine(string.Format("\t\tZufallsindices: {0} und {1}",z1,z2));
 
-			// Wenn true, vertausche, sonst, invertiere
+			// Wenn true, invertiere, sonst, tausche
 			if (!invert.Value) 
 			{
-				//Console.WriteLine("\t\tVertausche...");
+//				Console.WriteLine("\tVertausche...");
 				tmp = genome[z1];
 				genome[z1] = genome[z2];
 				genome[z2] = tmp;
 			}
 			else
 			{
-				//Console.WriteLine("\t\tInvertiere...");
+//				Console.WriteLine("\tInvertiere...");
 				tmp = z1 < z2 ? z1 : z2;
 				genome.Reverse(tmp, Math.Abs(z1-z2)+1);
 			}
@@ -98,7 +99,7 @@ namespace main
 				neighbours.Add(gene, GetNeighboursOfValue(gene, genomeA,genomeB));
 //				Console.WriteLine(string.Format("\t\tAllel: {0}, Nachbarn: {1}", gene, Helper.ListToString(neighbours[gene])));
 			}
-			//Console.WriteLine();
+//			Console.WriteLine();
 			
 			//Kind ermitteln
 //			Console.WriteLine(string.Format("\tErmittle Kind-Genom..."));
@@ -191,22 +192,24 @@ namespace main
 		/// <summary>
 		/// Der eigentliche evolutionäre Algorithmus - entspricht doc/EvoAlgTSP.pdf.
 		/// </summary>
-		public static void Compute()
+		public static void Compute(int countGene, int maxGenerations, int countIndividuals,
+		                           int countChilds, double recombinationProbability, bool? mutate, Gtk.TextView output)
 		{
 			
-			int countGene = 6;						// Anzahl der Gene
 			
-			int maxGenerations = 10;				// Maximale Anzahl der zu erzeugenden Generationen
+//			int countGene = 6;						// Anzahl der Gene
+//			
+//			int maxGenerations = 10;				// Maximale Anzahl der zu erzeugenden Generationen
 			int countGeneration;					// Anzahl der bereits erzeugten Generationen
 			
-			int countIndividuals = 10;				// Größe der Population (Anzahl der Individuen)
-			int countChilds = 10;					// Anzahl der zu erzeugenden Kinder
+//			int countIndividuals = 10;				// Größe der Population (Anzahl der Individuen)
+//			int countChilds = 10;					// Anzahl der zu erzeugenden Kinder
 			
-			double recombinationProbability = 0.3;	// Ein Wert zwischen 0 und 1. Gibt die Wahrscheinlichkeit der Rekombination zweier Elterngenome an
+//			double recombinationProbability = 0.3;	// Ein Wert zwischen 0 und 1. Gibt die Wahrscheinlichkeit der Rekombination zweier Elterngenome an
 			
-			double averageFitness;					// Durchschnittlicher Fitnesswert der zuletzt erzeugten Generation
+//			double averageFitness;					// Durchschnittlicher Fitnesswert der zuletzt erzeugten Generation
 			
-			Console.WriteLine("Compute:");
+			output.Buffer.Text = "Compute:\r\n";
 			
 			// 1. Initialisiere Population P(0) mit zufälligen Genomen
 			Population p = new Population(countIndividuals, countGene);
@@ -218,17 +221,17 @@ namespace main
 					FitnessFunctions.CalcTspFitness(genome);
 				}
 
-				Console.WriteLine(string.Format("Durchlauf: {0}", countGeneration + 1));
-				Console.WriteLine(string.Format("\tAktuelle Population (Count: {1}): \r\n{0}", p.CurrentGenerationAsString(), p.curGeneration.Count));
+				output.Buffer.Text += string.Format("\r\nDurchlauf: {0}\r\n", countGeneration + 1);
+				output.Buffer.Text += string.Format("\tAktuelle Population (Count: {1}): \r\n{0}", p.CurrentGenerationAsString(), p.curGeneration.Count());
 
 				Genome bestGenome = p.GetBestGenome();
 				
-				Console.WriteLine(string.Format("\tBeste Fitness {0}", bestGenome.Fitness));
-				Console.WriteLine(string.Format("\tBestes Genom {0}", bestGenome.AsString()));
+				//output.Buffer.Text += string.Format("\tBeste Fitness {0}\r\n", bestGenome.Fitness);
+				output.Buffer.Text += string.Format("\tBestes Genom {0}\r\n", bestGenome.AsString());
 				
 				// Berechne Durchschnittsfitnesswert der aktuellen Generation
 				//averageFitness = sumFit / countIndividuals; // p.Size();
-				Console.WriteLine(string.Format("\tDurchschnittliche Fitness {0}", p.GetAverageFitness()));
+				output.Buffer.Text += string.Format("\tDurchschnittliche Fitness {0}\r\n", p.GetAverageFitness());
 			
 				//alte Generation merken
 				p.Swap();
@@ -255,7 +258,7 @@ namespace main
 						Genome child = Recombine(p.curGeneration[rndIndexA], p.curGeneration[rndIndexB]);
 
 						// II.	Mutiere Kind c
-						Mutate(child, null);
+						Mutate(child, mutate);
 						
 						// III.	Füge Kinder C zu P' hinzu
 						p.curGeneration.Add(child);
@@ -274,14 +277,15 @@ namespace main
 				
 			// 5. Erzeuge Kind-Population -> die besten Individuen aus P' + P(0)
 				//p.NewGeneration();
-				Selection.Tsp.TopOfNewGenAndOldGen(p, 10);
+				Selection.Tsp.TopOfNewGenAndOldGen(p, countIndividuals);
 			}
 
 			//Ausgabe der besten Genome
 			//todo: Distinct funzt nich
+			output.Buffer.Text += "\r\nBestenliste\r\n";
 			List<Genome> bestGenomes = p.curGeneration.Distinct().ToList();
 			foreach (Genome genome in bestGenomes) {
-				Console.WriteLine(genome.AsString());
+				output.Buffer.Text += genome.AsString() + "\r\n";
 			}
 		}
 	}

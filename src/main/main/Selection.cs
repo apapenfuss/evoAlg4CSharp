@@ -18,19 +18,26 @@ namespace main
 
 				newGen.RemoveRange(TopCount, newGen.Count() - TopCount);
 
-//				string tmp = string.Empty;
-//				foreach (Genome genome in newGen) 
-//				{
-//					tmp += genome.AsString() + "\r\n";
-//				}
-//				Console.WriteLine( tmp);
+				population.curGeneration.Clear();
+				foreach (Genome genome in newGen) {
+					population.curGeneration.Add(genome.Copy());
+				}
+			}
+			
+			public static void TopOfNewGen (Population population, int TopCount)
+			{
+				List<Genome> newGen = new List<Genome> ();
+				newGen.AddRange (population.curGeneration);
+				newGen.Sort((a,b) => a.Fitness.CompareTo(b.Fitness));
+
+				newGen.RemoveRange(TopCount, newGen.Count() - TopCount);
 
 				population.curGeneration.Clear();
 				foreach (Genome genome in newGen) {
 					population.curGeneration.Add(genome.Copy());
 				}
 			}
-
+			
 		}
 	}
 }
