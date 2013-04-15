@@ -6,14 +6,25 @@ using Gtk;
 
 namespace main
 {
-	public static class Evolution
+	public class Evolution
 	{
+		public int countGene;
+		public int maxGenerations;
+		public int countIndividuals;
+		public int countChilds;
+		public double recombinationProbability;
+		public bool? mutate;
+		public Selection.SelPropType SelPropType;
+		public Selection.SelType SelType;
+		public int TournamentMemberCount;
+		public Gtk.TextView output;
+		
 		/// <summary>
 		/// Mutiert ein Genom
 		/// </summary>
 		/// <param name="genome">Das Genome, was mutiert werden soll</param>
 		/// <param name="invert">Optinal, null = Zufällige Methode, true = invertieren, false = tauschen</param>
-		public static void Mutate (Genome genome, bool? invert ) 
+		private void Mutate (Genome genome) 
 		{
 			
 //			Console.WriteLine("Mutate:");
@@ -22,8 +33,8 @@ namespace main
 			Console.WriteLine();
 			 */
 			Random rnd = new Random(Guid.NewGuid().GetHashCode());
-			if (!invert.HasValue)
-				invert = Convert.ToBoolean(rnd.Next(2));
+			if (!mutate.HasValue)
+				mutate = Convert.ToBoolean(rnd.Next(2));
 			
 			int z1 = 0;
 			int z2 = 0;
@@ -43,7 +54,7 @@ namespace main
 			//Console.WriteLine(string.Format("\t\tZufallsindices: {0} und {1}",z1,z2));
 
 			// Wenn true, invertiere, sonst, tausche
-			if (!invert.Value) 
+			if (!mutate.Value) 
 			{
 //				Console.WriteLine("\tVertausche...");
 				tmp = genome[z1];
@@ -68,7 +79,7 @@ namespace main
 		/// <returns>Das Kind-Genom</returns>
 		/// <param name="genomeA">Genome A</param>
 		/// <param name="genomeB">Genome B</param>
-		public static Genome Recombine (Genome genomeA, Genome genomeB)
+		private Genome Recombine (Genome genomeA, Genome genomeB)
 		{
 			//Fehler, wenn Genome null
 			if (genomeA == null || genomeB == null) {
@@ -148,7 +159,7 @@ namespace main
 		/// <param name="value">Allel</param>
 		/// <param name="genomeA">Genome A</param>
 		/// <param name="genomeB">Genome B</param>
-		private static Genome GetNeighboursOfValue (int value, Genome genomeA, Genome genomeB)
+		private Genome GetNeighboursOfValue (int value, Genome genomeA, Genome genomeB)
 		{
 			//todo: evtl. einfach an den Anfang und am Ende der Liste den jeweiligen Nachbarn einfügen,
 			//spart die zusätzlichen if-Anweisungen
@@ -172,28 +183,10 @@ namespace main
 			return new Genome(neighbours.Distinct().ToArray());
 		}
 		
-//		/// <summary>
-//		/// Convertiert den Inhalt einer Liste in einen String.
-//		/// </summary>
-//		/// <returns>Inhalt als String</returns>
-//		/// <param name="list">Zu konvertierende Liste</param>
-//		private static string ListToString (List<int> list)
-//		{
-//			string tmp = "{";
-//			string sep = string.Empty;
-//			foreach (int i in list) {
-//				tmp = string.Format("{0}{1} {2}", tmp, sep, i);
-//				sep = ",";
-//			}
-//			tmp = string.Format("{0} }}", tmp);
-//			return tmp;
-//		}
-		
 		/// <summary>
 		/// Der eigentliche evolutionäre Algorithmus - entspricht doc/EvoAlgTSP.pdf.
 		/// </summary>
-		public static void Compute(int countGene, int maxGenerations, int countIndividuals,
-		                           int countChilds, double recombinationProbability, bool? mutate, Gtk.TextView output)
+		public void Compute()
 		{
 			
 			
@@ -211,6 +204,8 @@ namespace main
 			
 			output.Buffer.Text = "Compute:\r\n";
 			
+			Genome bestGenome;
+			
 			// 1. Initialisiere Population P(0) mit zufälligen Genomen
 			Population p = new Population(countIndividuals, countGene);
 			
@@ -224,41 +219,64 @@ namespace main
 				output.Buffer.Text += string.Format("\r\nDurchlauf: {0}\r\n", countGeneration + 1);
 				output.Buffer.Text += string.Format("\tAktuelle Population (Count: {1}): \r\n{0}", p.CurrentGenerationAsString(), p.curGeneration.Count());
 
-				Genome bestGenome = p.GetBestGenome();
+				bestGenome = Helper.Fitness.GetBestGenome(p.curGeneration); // p.GetBestGenome();
 				
 				//output.Buffer.Text += string.Format("\tBeste Fitness {0}\r\n", bestGenome.Fitness);
 				output.Buffer.Text += string.Format("\tBestes Genom {0}\r\n", bestGenome.AsString());
 				
 				// Berechne Durchschnittsfitnesswert der aktuellen Generation
 				//averageFitness = sumFit / countIndividuals; // p.Size();
-				output.Buffer.Text += string.Format("\tDurchschnittliche Fitness {0}\r\n", p.GetAverageFitness());
+				output.Buffer.Text += string.Format("\tDurchschnittliche Fitness {0}\r\n", Helper.Fitness.GetAverageFitness(p.curGeneration));
 			
 				//alte Generation merken
-				p.Swap();
+				p.SaveAsOldGen();
 
 				// 3. Erzeuge Kinder und füge sie P' hinzu
 				
-				Random rnd =  new Random(Guid.NewGuid().GetHashCode());
+				//Random rnd =  new Random(Guid.NewGuid().GetHashCode());
 				double rndDouble;
-				int rndIndexA, rndIndexB;
+				int rndIndexA = 0;
+				int rndIndexB = 0;
 				
 				int c = 0;
 				while (c < countChilds) 
 				{
 					// Zufallszahl zwischen 0 und 1					
-					rndDouble = rnd.NextDouble();
+					rndDouble = Helper.GetRandomDouble();
 					
 					if (rndDouble <= recombinationProbability)
 					{
 						// I.	Rekombination zweier Individuen A und B aus Population P(0)
-						rndIndexA = rnd.Next(0, p.curGeneration.Count);
-						rndIndexB = rnd.Next(0, p.curGeneration.Count);
+						
+						//Selection.RandomParents(p.oldGeneration, ref rndIndexA, ref rndIndexB);
+						
+//						rndIndexA = Helper.GetRandomInteger(1, p.oldGeneration.Count)-1;
+//						rndIndexB = Helper.GetRandomInteger(1, p.oldGeneration.Count)-1;
 //						Console.WriteLine(string.Format("rndIndexA: {0}\nrndIndexB: {1}", rndIndexA, rndIndexB));
 						
-						Genome child = Recombine(p.curGeneration[rndIndexA], p.curGeneration[rndIndexB]);
+						//todo: was wenn duplikat?
+						Genome mama = null;
+						Genome papa = null;
+							
+						switch (SelType)
+						{
+							case main.Selection.SelType.Roulette :
+								mama = Selection.Roulette(p.oldGeneration, SelPropType);
+								papa = Selection.Roulette(p.oldGeneration, SelPropType);
+								break;
+							case main.Selection.SelType.SingleTournament :
+								mama = Selection.SingleTournament(p.oldGeneration, TournamentMemberCount, SelPropType);
+								papa = Selection.SingleTournament(p.oldGeneration, TournamentMemberCount, SelPropType);
+								break;
+							case main.Selection.SelType.MultiTournament :
+								//mama = Selection.MultiTournament(p.oldGeneration, TournamentMemberCount, SelPropType);
+								//papa = Selection.MultiTournament(p.oldGeneration, TournamentMemberCount, SelPropType);
+								break;							
+						}
+						Genome child = Recombine(mama,papa);
 
 						// II.	Mutiere Kind c
-						Mutate(child, mutate);
+						Mutate(child);
 						
 						// III.	Füge Kinder C zu P' hinzu
 						p.curGeneration.Add(child);
@@ -277,7 +295,9 @@ namespace main
 				
 			// 5. Erzeuge Kind-Population -> die besten Individuen aus P' + P(0)
 				//p.NewGeneration();
-				Selection.Tsp.TopOfNewGenAndOldGen(p, countIndividuals);
+				
+				Selection.Plus(p, countIndividuals);
+				//Selection.Comma(p, countIndividuals);
 			}
 
 			//Ausgabe der besten Genome

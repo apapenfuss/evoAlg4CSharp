@@ -5,28 +5,47 @@ namespace main
 {
 	public class Genome : List<int>
 	{		
-		
-		
 		private double _Fitness;
-
+		private double _SelectionProbability;
+		
 		public double Fitness {
 			get {
 				return _Fitness;
 			}
 			set { _Fitness = value; }
-		}		
-
+		}
+		
+		public double SelectionProbability {
+			get {
+				return _SelectionProbability;
+			}
+			set {
+				_SelectionProbability = value;
+			}
+		}			
+		
+		/// <summary>
+		/// Leerer Konstruktor
+		/// </summary>
 		public Genome()
 		{
 
 		}
-
+		
+		/// <summary>
+		/// Konstruktor
+		/// </summary>
+		/// <param name='arr'>Integer Array, mit dem Genom initialisiert wird</param>
 		public Genome (int[] arr)
 		{
 			this.Clear();
 			this.AddRange(arr);
 		}
-
+	
+		/// <summary>
+		/// Konstruktor
+		/// </summary>
+		/// <param name='size'>Anzahl der Gene</param>
 		public Genome(int size) 
 		{
 			//List<int> genome = new List<int>() {1};
@@ -52,10 +71,10 @@ namespace main
 		}
 				
 		/// <summary>
-		/// Convertiert den Inhalt einer Liste in einen String.
+		/// Convertiert den Inhalt eines Genoms in einen String.
 		/// </summary>
 		/// <returns>Inhalt als String</returns>
-		/// <param name="list">Zu konvertierende Liste</param>
+		/// <param name="list">Zu konvertierendes Genom</param>
 		public string AsString()
 		{
 			string tmp = "{";
@@ -67,7 +86,10 @@ namespace main
 			tmp = string.Format("{0} }} Fitness: {1}", tmp, _Fitness);
 			return tmp;
 		}
-
+		
+		/// <summary>
+		/// Kopiert ein Genom
+		/// </summary>
 		public Genome Copy()
 		{
 			Genome result = new Genome (this.ToArray());

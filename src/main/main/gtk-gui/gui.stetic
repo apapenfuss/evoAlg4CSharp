@@ -429,17 +429,125 @@
                               </packing>
                             </child>
                             <child>
-                              <placeholder />
+                              <widget class="Gtk.HPaned" id="hpaned7">
+                                <property name="MemberName" />
+                                <property name="CanFocus">True</property>
+                                <property name="Position">108</property>
+                                <child>
+                                  <widget class="Gtk.Label" id="label8">
+                                    <property name="MemberName" />
+                                    <property name="LabelProp" translatable="yes">Zufallsselektion</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="Resize">False</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="Gtk.HBox" id="hbox3">
+                                    <property name="MemberName" />
+                                    <property name="Spacing">6</property>
+                                    <child>
+                                      <widget class="Gtk.RadioButton" id="rb_Fitness">
+                                        <property name="MemberName" />
+                                        <property name="CanFocus">True</property>
+                                        <property name="Label" translatable="yes">Fitness</property>
+                                        <property name="Active">True</property>
+                                        <property name="DrawIndicator">True</property>
+                                        <property name="HasLabel">True</property>
+                                        <property name="UseUnderline">True</property>
+                                        <property name="Group">grp_RndSel</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="Position">0</property>
+                                        <property name="AutoSize">True</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="Gtk.RadioButton" id="rb_Rank">
+                                        <property name="MemberName" />
+                                        <property name="CanFocus">True</property>
+                                        <property name="Label" translatable="yes">Rang</property>
+                                        <property name="DrawIndicator">True</property>
+                                        <property name="HasLabel">True</property>
+                                        <property name="UseUnderline">True</property>
+                                        <property name="Group">grp_RndSel</property>
+                                      </widget>
+                                      <packing>
+                                        <property name="Position">1</property>
+                                        <property name="AutoSize">True</property>
+                                      </packing>
+                                    </child>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="Position">1</property>
+                                <property name="AutoSize">True</property>
+                                <property name="Expand">False</property>
+                                <property name="Fill">False</property>
+                              </packing>
                             </child>
                             <child>
-                              <placeholder />
+                              <widget class="Gtk.HPaned" id="hpaned8">
+                                <property name="MemberName" />
+                                <property name="CanFocus">True</property>
+                                <property name="Position">102</property>
+                                <child>
+                                  <widget class="Gtk.Label" id="label9">
+                                    <property name="MemberName" />
+                                    <property name="LabelProp" translatable="yes">Elternselektion</property>
+                                  </widget>
+                                  <packing>
+                                    <property name="Resize">False</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <widget class="Gtk.HPaned" id="hpaned9">
+                                    <property name="MemberName" />
+                                    <property name="CanFocus">True</property>
+                                    <property name="Position">192</property>
+                                    <child>
+                                      <widget class="Gtk.ComboBox" id="cbo_SelType">
+                                        <property name="MemberName" />
+                                        <property name="IsTextCombo">True</property>
+                                        <property name="Items" translatable="yes">Roulette
+q-Fache Turnierselektion
+q-Stufige Zweifache Turnierselektion</property>
+                                        <property name="Active">0</property>
+                                        <signal name="Changed" handler="OnCboSelTypeChanged" />
+                                      </widget>
+                                      <packing>
+                                        <property name="Resize">False</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <widget class="Gtk.SpinButton" id="txt_TournamentMemberCount">
+                                        <property name="MemberName" />
+                                        <property name="Sensitive">False</property>
+                                        <property name="CanFocus">True</property>
+                                        <property name="Upper">100</property>
+                                        <property name="PageIncrement">10</property>
+                                        <property name="StepIncrement">1</property>
+                                        <property name="ClimbRate">1</property>
+                                        <property name="Numeric">True</property>
+                                      </widget>
+                                    </child>
+                                  </widget>
+                                </child>
+                              </widget>
+                              <packing>
+                                <property name="Position">2</property>
+                                <property name="AutoSize">True</property>
+                                <property name="Expand">False</property>
+                                <property name="Fill">False</property>
+                              </packing>
                             </child>
                           </widget>
                         </child>
                       </widget>
                     </child>
                     <child>
-                      <widget class="Gtk.Label" id="GtkLabel5">
+                      <widget class="Gtk.Label" id="GtkLabel8">
                         <property name="MemberName" />
                         <property name="LabelProp" translatable="yes">&lt;b&gt;Evolution&lt;/b&gt;</property>
                         <property name="UseMarkup">True</property>
@@ -452,6 +560,8 @@
                   <packing>
                     <property name="Position">3</property>
                     <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
                   </packing>
                 </child>
                 <child>

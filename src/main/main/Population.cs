@@ -29,45 +29,23 @@ namespace main
 		}
 		
 		/// <summary>
-		/// Setzt die neue Generation als aktuelle Generation
+		/// Setzt die aktuelle Generation als alte Generation
 		/// </summary>
-		public void Swap ()
+		public void SaveAsOldGen ()
 		{
 			oldGeneration.Clear();
 			foreach (Genome genome in curGeneration) {
 				oldGeneration.Add(genome.Copy());
 			}
+			curGeneration.Clear();
 		}
 		
-		public Genome GetBestGenome()
-		{
-			Genome bestGenome = new Genome();
-			bestGenome.Fitness = double.MaxValue;
-
-			foreach (Genome genome in curGeneration)
-			{
-				if (genome.Fitness < bestGenome.Fitness) {
-					bestGenome = genome;
-				}
-			}
-			return bestGenome.Copy();
-		}
 		
-		public double GetTotalFitness()
-		{
-			double totalFitness = 0;
-			foreach (Genome genome in curGeneration)
-			{
-				totalFitness += genome.Fitness;
-			}
-			return totalFitness;
-		}
 		
-		public double GetAverageFitness()
-		{
-			return GetTotalFitness() / curGeneration.Count;
-		}
-
+		/// <summary>
+		/// Konvertiert die aktuelle Generation in einen String.
+		/// </summary>
+		/// <returns>Inhalt als String</returns>
 		public string CurrentGenerationAsString()
 		{
 			string tmp = string.Empty;

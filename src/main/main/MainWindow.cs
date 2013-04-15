@@ -44,12 +44,33 @@ public partial class MainWindow: Gtk.Window
 		
 		mutate = rb_Rnd.Active ? (bool?)null : (rb_Change.Active ? false : true);
 		
-		Evolution.Compute((int)txt_countGenes.Value, (int)txt_maxGeneration.Value, (int)txt_countIndividuals.Value,
-		                  (int)txt_countChilds.Value, txt_recombProb.Value, mutate, txt_Output);
+		Evolution evol = new Evolution();
+		
+		evol.countGene = (int)txt_countGenes.Value;
+		evol.maxGenerations = (int)txt_maxGeneration.Value;
+		evol.countIndividuals = (int)txt_countIndividuals.Value;
+		evol.countChilds = (int)txt_countChilds.Value;
+		evol.recombinationProbability = txt_recombProb.Value;
+		evol.SelPropType = rb_Fitness.Active ? main.Selection.SelPropType.Fitness : main.Selection.SelPropType.Ranking;
+		evol.SelType = (main.Selection.SelType)cbo_SelType.Active;
+		evol.TournamentMemberCount = (int)txt_TournamentMemberCount.Value;
+		
+		evol.mutate =  mutate;
+		evol.output = txt_Output;
+		
+		
+		evol.Compute();
 	}
 
 	protected void OnBtnStartActivated (object sender, System.EventArgs e)
 	{
 		throw new System.NotImplementedException ();
 	}
+
+	protected void OnCboSelTypeChanged (object sender, System.EventArgs e)
+	{
+		txt_TournamentMemberCount.Sensitive = cbo_SelType.Active > 0;
+	}
+
+	
 }
